@@ -1,0 +1,252 @@
+.kss-styleguide {
+  overflow-x: hidden;
+  padding: 0;
+  background-color: #fff;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+footer {
+  padding: 30px 0;
+}
+
+.kss-example {
+  margin-top: 1em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  min-height: 4em;
+  margin-bottom: 3em;
+  position: relative;
+}
+
+.kss-example:after,
+.kss-example:before {
+  clear: both;
+  content: " ";
+  display: table;
+}
+
+.kss-main {
+  transition-property: right, transform;
+  transition-duration: .5s;
+  transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  right: 0;
+  background: #fff;
+  height: 100%;
+}
+
+.kss-component-methods {
+  position: relative;
+  height: 2.75em;
+}
+
+.kss-component-methods a {
+  display: inline-block;
+  margin-rigth: 0.25em;
+  padding: .25em .5em;
+  text-align: center;
+}
+
+.kss-main .variants,
+.kss-main .markup {
+  position: relative;
+  margin-top: 1em;
+  margin-bottom: 3em;
+}
+
+.kss-main .kss-drawer {
+  position: fixed;
+  box-shadow: 6px 0 12px rgba(0,0,0,.4);
+  z-index: 250;
+  left: 0;
+  bottom: -600px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2em;
+  height: 0;
+  background: #fff;
+  transition-property: height;
+  transition-duration: .5s;
+  overflow: hidden;
+}
+
+.kss-main .kss-drawer.active {
+  bottom: 0;
+  height: 600px;
+  overflow: auto;
+}
+
+.kss-main .variants-toggle,
+.kss-main .markup-toggle {
+  z-index: 10;
+  cursor: pointer;
+  color: #fff;
+  background-color: #0af;
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
+  line-height: 1.5em;
+}
+
+.component-description header .kss-component-methods,
+.component-description header .kss-component-methods {
+  transition-property: opacity;
+  transition-duration: .25s;
+  transition-timing-function: cubic-bezier(.42, 0, .58, 1);
+  opacity: 0;
+}
+
+.component-description header:focus .kss-component-methods,
+.component-description header:hover .kss-component-methods {
+    opacity: 1;
+    display: block;
+}
+
+.component-description header {
+  position: relative;
+}
+
+.component-description header .kss-drawer-close {
+  position: absolute;
+  right: 1em;
+  top: -0.5em;
+  border-radius: 50%;
+  text-align: center;
+  display: block;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  text-decoration: none;
+}
+
+.component-description header .kss-drawer-close:hover,
+.component-description header .kss-drawer-close:focus {
+  background-color: #333;
+
+  color: #fff;
+}
+
+.kss-sidebar {
+  position: fixed;
+  z-index: 9999;
+  height: 100%;
+  overflow-y: auto;
+  transition-property: right, transform, box-shadow;
+  box-shadow: 3px 3px 12px rgba(0,0,0,.5);
+  perspective: 800px;
+  transition-duration: 0.25s;
+  transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  perspective-origin: center right;
+  transform-style: preserve-3d;
+  transform: rotateY(10deg);
+  backface-visibility: hidden;
+  top: 0;
+  right: -20em;
+  width: 20em;
+  background-color: #eee;
+}
+
+.sidebar-toggle {
+  position: fixed;
+  top: 4.75em;
+  right: 0;
+  transition-property: right;
+  transition-duration: .5s;
+  transition-timing-function: cubic-bezier(.42, 0, .58, 1);
+  background: #eee;
+}
+
+.sidebar-toggle,
+.sidebar-toggle:link {
+  text-decoration: none;
+  color: #444 !important;
+}
+
+.sidebar-toggle:hover,
+.sidebar-toggle:focus {
+  text-decoration: none;
+  color: #fff !important;
+  background-color: #444 !important;
+}
+
+.sidebar-toggle span {
+  display: block;
+  font-size: 2em;
+  padding: 0.5em;
+  width: 2em;
+  height: 2em;
+}
+
+.kss-main.nav-active {
+  right: 20em;
+}
+
+.nav-active .kss-sidebar {
+  transform: rotateY(0deg);
+  box-shadow: 0px 0px 0px rgba(0,0,0,.3);
+  right: 0em;
+}
+
+.nav-active .sidebar-toggle {
+  right: 20em;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+/* so things dont bump up against the walls */
+.kss-main > article > section {
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+.kss-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.kss-sidebar ul li {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px #ccc solid;
+}
+
+.kss-sidebar .top-level > ul > li.active > a {
+  background-color: #555 !important;
+  color: #fff;
+}
+
+
+.kss-sidebar ul li ul {
+  background-color: #fff !important;
+  display: none;
+  overflow: hidden;
+  max-height: 0px;
+  transition-property: max-height;
+  transition-duration: .25s;
+  transition-timing-function: cubic-bezier(.42, 0, .58, 1);
+}
+
+.kss-sidebar li.active ul {
+  display: block;
+  overflow: hidden;
+  max-height: 3000px;
+}
+
+.sidebar-wrapper nav ul li a {
+  display: block;
+  padding: .75em 1em;
+}
+
+.kss-sidebar nav > ul > li > ul a {
+  padding-left: 1.5em;
+}
+
+
+
+.sidebar-wrapper nav ul li a:hover {
+  background-color: #333;
+  color: #fff;
+}

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="/kalastatic/prototype/styleguide/">
+    <meta charset="utf-8">
+    <title>Style Guide</title>
+    <meta name="description" content="" />
+    <meta name="generator" content="kss-node" />
+    <meta name="viewport" content="width=device-width, minimal-ui">
+    <!-- Latest compiled and minified CSS -->
+    <link type="text/css" rel="stylesheet" href="public/kss.css">
+    <link type="text/css" rel="stylesheet" href="public/prettify.css">
+
+    {{{styles}}}
+    <script src="http://code.jquery.com/jquery.js"></script>
+  </head>
+  <body class="kss-styleguide" data-spy="scroll">
+
+    <main role="main" class="kss-main"><!-- wraps main content -->
+        {{#if homepage}}
+        <article>
+          <section class="kss-depth-{{ depth }} jumbotron">
+            <h1>Styleguide</h1>
+          </section>
+          {{{homepage}}}
+        </article>
+        {{else}}
+        <article>
+          {{!
+            Find each section, in order.
+            If there's no markup or modifiers supplied, use a Markdown-only
+            layout instead.
+
+            The "root" element comes first in this loop, and can be detected using
+            the "#whenDepth 1" block as seen below.
+          }}
+          {{#eachSection rootName}}
+            {{#ifDepth 1}}
+              <section class="kss-depth-{{ depth }} jumbotron">
+                <div class="component-description">
+                  <header>
+                    <h1 class="kss-title" id="{{ referenceURI }}">{{ header }}</h1>
+            {{else}}
+              <section class="kss-depth-{{ depth }}">
+                <div class="component-description">
+                  <header>
+                    <h{{ depth }} class="kss-title" id="{{ referenceURI }}">
+                      <span class="kss-ref badge pull-right">{{ referenceURI }}</span> {{ header }}
+                    </h{{ depth }}>
+            {{/ifDepth}}
+
+                <div class="kss-component-methods">
+                  {{#if modifiers.length}}
+                    <a class="variants-toggle fa fa-plus"><span class="sr-only">Variants</span></a>
+                  {{/if}}
+                  {{#if markup}}
+                    <a class="markup-toggle fa fa-code"><span class="sr-only">Markup</span></a>
+                  {{/if}}
+                </div>
+              </header>
+                {{#eachParameter}}
+                  <h4><span class="pull-right"><code>{{name}}</code></span> {{{description}}}</h4>
+                {{/eachParameter}}
+
+                {{#if description}}
+                  <div class="kss-box">{{{description}}}</div>
+                {{/if}}
+
+                {{#if markup}}
+                  <div class="kss-example">{{{markup}}}</div>
+
+                  <div class="markup">
+                    <div class="kss-drawer">
+                      <header>
+                        <h5>{{header}} — Markup</h5>
+                        <a href="#" class="kss-drawer-close fa fa-close"><span class="sr-only">Close Drawer</span></a>
+                      </header>
+                      <pre class="prettyprint lang-html">{{markup}}</pre>
+                    </div>
+                  </div>
+
+                  {{#if modifiers.length}}
+                  <div class="variants">
+                    <div class="kss-drawer">
+                      <header>
+                        <h5>{{header}} — Variants</h5>
+                        <a href="#" class="kss-drawer-close fa fa-close"><span class="sr-only">Close Drawer</span></a>
+                      </header>
+                      <div>
+                      {{#eachModifier}}
+                        <h4>{{{description}}} <span class="pull-right"><code>{{name}}</code></span></h4>
+                        <div class="kss-example">{{{markup}}}</div>
+                      {{/eachModifier}}
+                    </div>
+                    </div>
+                  </div>
+                  {{/if}}
+                {{/if}}
+                </div><!-- // closes .component-description -->
+              </section>
+          {{/eachSection}}
+        </article>
+        {{/if}}
+
+        <a class="sidebar-toggle" href="#"><span>☰</span></a>
+        <aside id="sidebar" class="kss-sidebar">
+          <div class="sidebar-wrapper">
+            <nav class="top-level">
+              <ul>
+                <li><a href="index.html">Overview</a></li>
+                {{#eachRoot}}
+                <li class="{{referenceURI}}"><a href="section-{{reference}}.html">{{header}}</a>
+                  <ul>
+                  {{#eachSection reference}}
+                    {{#ifDepth 2}}
+                      <li><a href="section-{{../../reference}}.html#{{reference}}">{{header}}</a>
+                    {{/ifDepth}}
+                  {{/eachSection}}
+                  </ul>
+                </li>
+              {{/eachRoot}}
+              </ul>
+            </nav>
+          </div>
+        </aside>
+    </main>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="../vendor/matchHeight/dist/jquery.matchHeight.js"></script>
+    <script src="../js/scripts.js"></script>
+    <script src="public/kss.js"></script>
+
+    <script>
+
+      // simulate drupal attach
+      // quick way to simulate drupal behaviors without the Drupal behaviors
+      // so we can write clean Drupal.behaviors.attach js
+      var Drupal = Drupal || { behaviors: {}};
+      for (var key in Drupal.behaviors) {
+        if (!Drupal.behaviors.hasOwnProperty(key)) continue;
+        var obj = Drupal.behaviors[key];
+        obj.attach();
+      }
+
+      jQuery(document).ready(function(){
+
+        jQuery(".sidebar-toggle").on('click', function(e){
+          jQuery("main").toggleClass('nav-active');
+          e.preventDefault();
+        });
+
+        // opens active drawer
+        jQuery("#sidebar .top-level > ul > li").each(function(){
+          if( $(this).attr("class") ) {
+            if( $(".jumbotron h1").attr('id').toLowerCase() == $(this).attr("class").toLowerCase() ){
+              $(this).addClass("active");
+              $("#sidebar").data('active', $(this))
+            }
+          }
+        });
+
+        // opens / closes sidebar
+        jQuery('#sidebar .sidebar-wrapper > nav > ul > li').on('click', function(){
+          if( $("#sidebar").data("active") ) {
+            $("#sidebar").data("kactive").removeClass("active");
+          }
+          $("#sidebar").data("active",$(this));
+          $("#sidebar").data("active").toggleClass('active');
+        });
+
+        // opens / closes markup and variants drawer
+        jQuery('.component-description .variants-toggle').on('click', function() {
+          $(this).closest('.component-description').find(".variants .kss-drawer").toggleClass("active");
+          $(this).toggleClass("active");
+        });
+
+        jQuery('.component-description .markup-toggle').on('click', function() {
+          $(this).closest(".component-description").find(".markup .kss-drawer").toggleClass("active");
+          $(this).toggleClass("active");
+        });
+
+        $(".component-description .kss-drawer-close").on('click', function(e) {
+          $(this).parent().parent().removeClass("active");
+          e.preventDefault();
+        });
+
+        // Ensure code blocks are highlighted properly...
+        jQuery('pre>code').addClass('prettyprint');
+        prettyPrint();
+
+      });
+    </script>
+
+    <script src="public/prettify.js"></script>
+    {{{scripts}}}
+  </body>
+</html>
